@@ -73,7 +73,14 @@ class Camada(nn.Module):
         Returns:
             spikes: [batch, n_neurons]
         """
-        batch_size = x.shape[0]
+        # Para topologias não-densas, a matriz de conexão define
+        # como as entradas de todos os neurônios contribuem para cada
+        # neurônio-alvo da camada.
+        #
+        # x_mapeado[b, o, d, s] = Σ_i x[b, i, d, s] * M[o, i]
+        if self.conexao != 'densa':
+            x = torch.einsum('bids,oi->bods', x, self.matriz_conexao)
+
         spikes = []
         
         for i, neuronio in enumerate(self.neuronios):
