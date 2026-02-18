@@ -1,0 +1,15 @@
+# Dependências de desenvolvimento
+# Instalar com: pip install -r requirements-dev.txt
+
+-r requirements.txt
+
+# Testes
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Publicação no PyPI
+build>=1.0.0
+twine>=5.0.0
+
+# Qualidade de código
+flake8>=6.0.0

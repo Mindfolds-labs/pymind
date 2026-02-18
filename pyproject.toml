@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymind"
+version = "0.2.1"
+description = "Rede Neural Artificial com Dendritos e Memória Engram"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Mindfolds Labs", email = "contato@mindfolds.ai" }
+]
+keywords = [
+    "neural-network", "dendrites", "bioinspired",
+    "deep-learning", "pytorch", "engram", "spiking",
+    "hebbian", "stdp", "plasticity"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+requires-python = ">=3.9"
+
+# torch>=2.0.0        : einsum vetorizado, autograd estável, Python 3.9+ ok
+# torchvision>=0.15.0 : paired com torch 2.0, necessário para MNIST datasets
+# numpy>=1.21.0       : compatível com torch 2.x e Python 3.9+
+# matplotlib>=3.5.0   : visualizações de neurônios e engrams
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "numpy>=1.21.0",
+    "matplotlib>=3.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "twine>=5.0.0",
+    "build>=1.0.0",
+]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=1.3.0",
+]
+
+[project.urls]
+Homepage      = "https://github.com/Mindfolds-labs/pymind"
+Repository    = "https://github.com/Mindfolds-labs/pymind"
+"Bug Tracker" = "https://github.com/Mindfolds-labs/pymind/issues"
+
+[tool.setuptools.packages.find]
+where   = ["."]
+include = ["pymind*"]
+exclude = ["tests*", "examples*"]
