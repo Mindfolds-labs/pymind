@@ -89,10 +89,15 @@ class PiramidalMNIST(nn.Module):
         if x.dim() == 4:
             x = x.view(x.shape[0], -1)   # [batch, 784]
 
+        # Evita reutilizar feedback de batches anteriores na inferência
+        # ou quando o tamanho do batch muda entre chamadas.
+        if erro is None:
+            self.feedback_cache.clear()
+
         # ── Camada 1 : 128 neurônios ──────────────────────────────────
         x = self.proj1(x)                 # [batch, 128, D, S]
 
-        if 'camada1' in self.feedback_cache:
+        if erro is not None and 'camada1' in self.feedback_cache:
             x = self._aplicar_feedback(x, self.feedback_cache['camada1'])
 
         spikes1 = self.camada1(x)
@@ -104,7 +109,7 @@ class PiramidalMNIST(nn.Module):
         # ── Camada 2 : 64 neurônios ───────────────────────────────────
         x = self.proj2(spikes1)
 
-        if 'camada2' in self.feedback_cache:
+        if erro is not None and 'camada2' in self.feedback_cache:
             x = self._aplicar_feedback(x, self.feedback_cache['camada2'])
 
         spikes2 = self.camada2(x)
@@ -116,7 +121,7 @@ class PiramidalMNIST(nn.Module):
         # ── Camada 3 : 32 neurônios ───────────────────────────────────
         x = self.proj3(spikes2)
 
-        if 'camada3' in self.feedback_cache:
+        if erro is not None and 'camada3' in self.feedback_cache:
             x = self._aplicar_feedback(x, self.feedback_cache['camada3'])
 
         spikes3 = self.camada3(x)
