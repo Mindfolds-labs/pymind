@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PyMind 🧠
 
 Rede Neural Artificial com Dendritos e Memória Engram
@@ -16,3 +17,7 @@ PyMind é uma biblioteca para criação de redes neurais inspiradas em neurônio
 ```bash
 pip install -r requirements.txt
 pip install -e .
+=======
+# pymind
+Core Neural Computation Framework
+>>>>>>> f6206daffbde869c85829dec52bf6b756512c371
