@@ -19,36 +19,14 @@ from .models.mnist import MNISTClassifier
 from .utils.treino import Treinador
 from .utils.visualizacao import *
 
-__version__ = "0.2.0"
-__author__ = "Seu Nome"
-__email__ = "seu.email@example.com"
+__version__ = "0.2.1"
+__author__ = "Mindfolds Labs"
 
 __all__ = [
-    # Core
-    'NeuronioDendritico',
-    'Camada',
-    'ConexaoDensa',
-    'ConexaoEsparsa',
-    'ConexaoRegional',
-    
-    # Memória
-    'Engram',
-    'MemoriaTrabalho',
-    
-    # Plasticidade
-    'Hebbian',
-    'STDP',
-    'Homeostase',
-    
-    # Arquiteturas
-    'PiramidalMNIST',
-    'FunilMNIST',
-    'Profunda',
-    'AutoencoderMNIST',
-    
-    # Modelos
-    'MNISTClassifier',
-    
-    # Utils
-    'Treinador',
+    'NeuronioDendritico', 'Camada',
+    'ConexaoDensa', 'ConexaoEsparsa', 'ConexaoRegional',
+    'Engram', 'MemoriaTrabalho',
+    'Hebbian', 'STDP', 'Homeostase',
+    'PiramidalMNIST', 'FunilMNIST', 'Profunda', 'AutoencoderMNIST',
+    'MNISTClassifier', 'Treinador',
 ]
