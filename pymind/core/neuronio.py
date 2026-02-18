@@ -87,14 +87,13 @@ class NeuronioDendritico(nn.Module):
         x: [batch, n_dendritos, n_sinapses] ou [n_dendritos, n_sinapses]
         
         Returns:
-            spikes: [batch] ou escalar
+            spikes: [batch]
         """
         # Garantir batch dimension
         if x.dim() == 2:
             x = x.unsqueeze(0)
         
-        batch_size = x.shape[0]
-        
+
         # Calcular potenciais das sinapses: [batch, dendritos, sinapses]
         potenciais_sinapses = x * self.W.unsqueeze(0)
         
@@ -119,8 +118,6 @@ class NeuronioDendritico(nn.Module):
         self.ultimo_spike = spikes.mean()
         self.total_spikes += spikes.sum().long()
         
-        if batch_size == 1:
-            return spikes.squeeze(0)
         return spikes
     
     def atualizar_plasticidade(self, delta_I):
