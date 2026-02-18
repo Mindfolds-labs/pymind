@@ -4,7 +4,29 @@ Neurônio base com dendritos e filamentos (N)
 
 import torch
 import torch.nn as nn
-import math
+
+
+class _SpikeSurrogate(torch.autograd.Function):
+    """
+    Spike binário com gradiente substituto (straight-through).
+
+    Forward: degrau duro (0/1)
+    Backward: derivada suave via sigmoid(beta * x)
+    """
+
+    @staticmethod
+    def forward(ctx, input_tensor, beta):
+        ctx.save_for_backward(input_tensor)
+        ctx.beta = beta
+        return (input_tensor >= 0).float()
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        (input_tensor,) = ctx.saved_tensors
+        beta = ctx.beta
+        sig = torch.sigmoid(beta * input_tensor)
+        surrogate_grad = beta * sig * (1.0 - sig)
+        return grad_output * surrogate_grad, None
 
 class NeuronioDendritico(nn.Module):
     """
@@ -51,6 +73,9 @@ class NeuronioDendritico(nn.Module):
         self.register_buffer("ultimo_potencial", torch.zeros(n_dendritos))
         self.register_buffer("ultimo_spike", torch.zeros(1))
         self.register_buffer("total_spikes", torch.zeros(1, dtype=torch.long))
+
+        # Controle do gradiente substituto para permitir treino por backprop
+        self.beta_surrogate = 5.0
     
     @property
     def W(self):
@@ -86,8 +111,9 @@ class NeuronioDendritico(nn.Module):
         # Soma total (só dendritos que passaram)
         soma = potenciais_filtrados.sum(dim=-1)  # [batch]
         
-        # Gerar spikes
-        spikes = (soma >= self.theta).float()
+        # Gerar spikes com função degrau no forward e gradiente substituto
+        # no backward para viabilizar otimização.
+        spikes = _SpikeSurrogate.apply(soma - self.theta, self.beta_surrogate)
         
         # Atualizar contadores
         self.ultimo_spike = spikes.mean()
